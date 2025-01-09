@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   SafeAreaView,
   ScrollView,
@@ -10,9 +11,23 @@ import {
 import React from 'react';
 import images from '@/constants/images';
 import icons from '@/constants/icons';
+import { login } from '@/lib/appwrite';
+import { userGlobalContext } from '@/providers/global-provider';
+import { Redirect } from 'expo-router';
 
 const SignInPage = () => {
-  const handleLogin = () => {};
+  const { refetch, loading, isLoggedIn } = userGlobalContext();
+  if (!loading && isLoggedIn) return <Redirect href="/" />;
+  
+  const handleLogin = async () => {
+    const result = await login();
+
+    if (result) {
+      refetch();
+    } else {
+      Alert.alert('Error', 'Failed to login');
+    }
+  };
   return (
     <SafeAreaView className="bg-white h-full">
       <ScrollView contentContainerClassName="h-full">

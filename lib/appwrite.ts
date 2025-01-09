@@ -52,18 +52,28 @@ export async function login() {
 }
 
 export async function logout() {
-  const response = await account.get();
-  if (response.$id) {
-    const userAvatar = avater.getInitials(response.name);
-
-    return {
-      ...response,
-      avatar: userAvatar.toString(),
-    };
-  }
   try {
+    await account.deleteSession('current');
+    return true;
   } catch (err) {
     console.error(err);
     return false;
+  }
+}
+
+export async function getCurrentUser() {
+  try {
+    const response = await account.get();
+    if (response.$id) {
+      const userAvatar = avater.getInitials(response.name);
+
+      return {
+        ...response,
+        avatar: userAvatar.toString(),
+      };
+    }
+  } catch (err) {
+    console.error(err);
+    return null;
   }
 }
