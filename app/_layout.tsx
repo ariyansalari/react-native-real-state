@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 // styles
 import './globals.css';
 import { StatusBar } from 'react-native';
+import GlobalProvider from '@/providers/global-provider';
 
 export default function TabLayout() {
   const [fontsLoaded] = useFonts({
@@ -25,9 +26,9 @@ export default function TabLayout() {
     return null;
   }
   return (
-    <>
-    <StatusBar/>
-    <Stack screenOptions={{ headerShown: false }} />
-    </>
-  )
+    <GlobalProvider>
+      <StatusBar />
+      <Stack screenOptions={{ headerShown: false }} />
+    </GlobalProvider>
+  );
 }
